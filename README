@@ -1,0 +1,34 @@
+# introduction
+
+mesos: offers <-> masters
+
+swarm: RAFT consensus, containers
+
+clusterIP -> NodePort -> LoadBalancer 
+          -> Ingress
+          
+kube etcd : RAFT consensus, statefull
+kube apiserver : stateless 
+kube replication controllers -> deployments 
+kube scheduler: predicates, priorities
+
+
+# SSH into the cluster, and create a hub
+
+1) kubectl create -f pods.env
+2) kubectl create -f pre.yml
+3) kubectl create -f post.yml
+
+# minishift: create a hub and watch it die 
+
+minishift start
+
+Re run the steps above.
+
+- run `kubectl get events` : do you see any scheduler errors? 
+- for pods that are pending, run kubectl describe pod ... ; do you see any failed conditions errors?
+- for the pods that are pending, go into the deployments, and change resource needs, see if you can get it to start.
+
+# Advanced 
+
+- Try a hot upgrade  `kubectl set image deployment/... hub-webapp=hub-webapp:4.3.0`
